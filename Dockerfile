@@ -1,4 +1,4 @@
-FROM java:8-jdk-alpine
+FROM anapsix/alpine-java:jdk8
 
 ENV DOCKER_BUCKET=get.docker.com \
     DOCKER_VERSION=1.11.1 \
@@ -39,11 +39,9 @@ RUN set -x \
 COPY jenkins-slave /usr/local/bin/jenkins-slave
 
 WORKDIR /home/jenkins
-USER jenkins
-RUN /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -ivy /tmp/.ivy2 -sbt-launch-dir /tmp/.sbt/launchers -211 -sbt-create about
+RUN /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -ivy /tmp/.ivy2 -sbt-launch-dir /tmp/.sbt/launchers -211 -sbt-create about \
+    chown -R jenkins:jenkins /tmp/*
 # COPY your project to here
 #
 # TODO: uncomment bellow otherwise you will suffer permission deny error
 # RUN chown -R jenkins:jenkins /home/jenkins \
-#VOLUME /home/jenkins
-ENTRYPOINT ["jenkins-slave"]
