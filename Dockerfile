@@ -28,7 +28,6 @@ RUN curl https://storage.googleapis.com/kubernetes-release/release/v$K8S_VERSION
     kubectl --help
 
 # set up jenkins slave
-COPY jenkins-slave /usr/local/bin/jenkins-slave
 RUN set -x \
   && addgroup jenkins \
   && adduser -h $HOME -s /bin/bash -D -G jenkins jenkins \
@@ -37,6 +36,8 @@ RUN set -x \
   && chmod 755 /usr/share/jenkins \
   && chmod 644 /usr/share/jenkins/slave.jar 
 
+COPY jenkins-slave /usr/local/bin/jenkins-slave
+
 WORKDIR /home/jenkins
 USER jenkins
 RUN /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -ivy /tmp/.ivy2 -sbt-launch-dir /tmp/.sbt/launchers -211 -sbt-create about
@@ -44,9 +45,5 @@ RUN /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -i
 #
 # TODO: uncomment bellow otherwise you will suffer permission deny error
 # RUN chown -R jenkins:jenkins /home/jenkins \
-# VOLUME /home/jenkins
-#WORKDIR /home/jenkins
-#USER jenkins
-#ENTRYPOINT ["jenkins-slave"]
-
-
+#VOLUME /home/jenkins
+ENTRYPOINT ["jenkins-slave"]
