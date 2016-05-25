@@ -45,9 +45,7 @@ RUN /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -i
 
 # install kubectl
 ENV K9S_VERSION 1.2.4
-RUN apk --no-cache add --virtual .build-deps && \
-    curl https://storage.googleapis.com/kubernetes-release/release/v$K8S_VERSION/bin/linux/amd64/kubectl > /usr/local/bin/kubectl && \
+RUN curl https://storage.googleapis.com/kubernetes-release/release/v$K8S_VERSION/bin/linux/amd64/kubectl > /usr/local/bin/kubectl && \
     chmod +x /usr/local/bin/kubectl && \
-    apk del .build-deps && \
     kubectl --help
 
