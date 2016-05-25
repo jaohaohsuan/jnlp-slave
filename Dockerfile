@@ -21,14 +21,6 @@ RUN set -x \
   && curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > /usr/local/bin/sbt \
   && chmod 0755 /usr/local/bin/sbt
 
-# install kubectl
-ENV K8S_VERSION 1.2.4
-RUN apk --no-cache add --virtual .build-deps && \
-    curl https://storage.googleapis.com/kubernetes-release/release/v$K8S_VERSION/bin/linux/amd64/kubectl > /usr/local/bin/kubectl && \
-    chmod +x /usr/local/bin/kubectl && \
-    apk del .build-deps && \
-    kubectl --help
-
 # set up jenkins slave
 COPY jenkins-slave /usr/local/bin/jenkins-slave
 RUN set -x \
@@ -39,7 +31,7 @@ RUN set -x \
   && chmod 755 /usr/share/jenkins \
   && chmod 644 /usr/share/jenkins/slave.jar 
 
-#WORKDIR /home/jenkins
+WORKDIR /home/jenkins
 USER jenkins
 RUN /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -ivy /tmp/.ivy2 -sbt-launch-dir /tmp/.sbt/launchers -211 -sbt-create about
 # COPY your project to here
@@ -50,3 +42,12 @@ RUN /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -i
 #WORKDIR /home/jenkins
 #USER jenkins
 #ENTRYPOINT ["jenkins-slave"]
+
+# install kubectl
+ENV K9S_VERSION 1.2.4
+RUN apk --no-cache add --virtual .build-deps && \
+    curl https://storage.googleapis.com/kubernetes-release/release/v$K8S_VERSION/bin/linux/amd64/kubectl > /usr/local/bin/kubectl && \
+    chmod +x /usr/local/bin/kubectl && \
+    apk del .build-deps && \
+    kubectl --help
+
