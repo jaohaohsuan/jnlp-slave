@@ -39,7 +39,7 @@ RUN set -x \
 COPY jenkins-slave /usr/local/bin/jenkins-slave
 
 WORKDIR /home/jenkins
-RUN /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -ivy /tmp/.ivy2 -sbt-launch-dir /tmp/.sbt/launchers -211 -sbt-create about \
+RUN /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -ivy /tmp/.ivy2 -sbt-launch-dir /tmp/.sbt/launchers -211 -sbt-create about && \
     chown -R jenkins:jenkins /tmp/*
 # COPY your project to here
 #
