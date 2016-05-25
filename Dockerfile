@@ -32,3 +32,11 @@ RUN set -x \
   && chmod 644 /usr/share/jenkins/slave.jar 
 
 WORKDIR /home/jenkins
+USER jenkins
+RUN /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -ivy /tmp/.ivy2 -sbt-launch-dir /tmp/.sbt/launchers -211 -sbt-create about
+# COPY your project to here
+#
+# TODO: uncomment bellow otherwise you will suffer permission deny error
+# RUN chown -R jenkins:jenkins /home/jenkins \
+VOLUME /home/jenkins
+ENTRYPOINT ["jenkins-slave"]
