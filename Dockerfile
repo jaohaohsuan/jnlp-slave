@@ -1,10 +1,5 @@
 FROM anapsix/alpine-java:jdk8
 
-# install sbt if possible
-RUN set -x \
-  && curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > /usr/local/bin/sbt \
-  && chmod 0755 /usr/local/bin/sbt
-
 ENV DOCKER_BUCKET=get.docker.com \
     DOCKER_VERSION=1.11.1 \
     DOCKER_SHA256=893e3c6e89c0cd2c5f1e51ea41bc2dd97f5e791fcfa3cee28445df277836339d \
@@ -20,6 +15,11 @@ RUN set -x \
   && rmdir docker \
   && rm docker.tgz \
   && docker -v
+
+# install sbt if possible
+RUN set -x \
+  && curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > /usr/local/bin/sbt \
+  && chmod 0755 /usr/local/bin/sbt
 
 # set up jenkins slave
 COPY jenkins-slave /usr/local/bin/jenkins-slave
