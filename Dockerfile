@@ -1,4 +1,4 @@
-FROM anapsix/alpine-java:jdk8
+FROM java:8-jdk-alpine
 
 ENV DOCKER_BUCKET=get.docker.com \
     DOCKER_VERSION=1.11.1 \
