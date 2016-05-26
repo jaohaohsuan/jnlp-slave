@@ -1,6 +1,6 @@
-FROM anapsix/alpine-java:jdk8
+FROM java:8-jdk-alpine
 
-ENV DOCKER_BUCKET=get.docker.com \
+ARG DOCKER_BUCKET=get.docker.com \
     DOCKER_VERSION=1.11.1 \
     DOCKER_SHA256=893e3c6e89c0cd2c5f1e51ea41bc2dd97f5e791fcfa3cee28445df277836339d \
     HOME=/home/jenkins \
@@ -16,11 +16,6 @@ RUN set -x \
   && rmdir docker \
   && rm docker.tgz \
   && docker -v
-
-# install sbt if possible
-RUN set -x \
-  && curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > /usr/local/bin/sbt \
-  && chmod 0755 /usr/local/bin/sbt
 
 # install kubectl
 RUN curl https://storage.googleapis.com/kubernetes-release/release/v$K8S_VERSION/bin/linux/amd64/kubectl > /usr/local/bin/kubectl && \
@@ -38,10 +33,14 @@ RUN set -x \
 
 COPY jenkins-slave /usr/local/bin/jenkins-slave
 
-WORKDIR /home/jenkins
-RUN /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -ivy /tmp/.ivy2 -sbt-launch-dir /tmp/.sbt/launchers -211 -sbt-create about && \
+RUN curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > /usr/local/bin/sbt && \
+    chmod 0755 /usr/local/bin/sbt && \
+    /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -ivy /tmp/.ivy2 -sbt-launch-dir /tmp/.sbt/launchers -211 -sbt-create about && \
     chown -R jenkins:jenkins /tmp/*
+
+WORKDIR /home/jenkins
 # COPY your project to here
 #
 # TODO: uncomment bellow otherwise you will suffer permission deny error
 # RUN chown -R jenkins:jenkins /home/jenkins \
+ENTRYPOINT ["jenkins-slave"]
