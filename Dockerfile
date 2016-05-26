@@ -1,10 +1,10 @@
 FROM java:8-jdk-alpine
 
-ARG DOCKER_BUCKET=get.docker.com \
-    DOCKER_VERSION=1.11.1 \
-    DOCKER_SHA256=893e3c6e89c0cd2c5f1e51ea41bc2dd97f5e791fcfa3cee28445df277836339d \
-    HOME=/home/jenkins \
-    K8S_VERSION=1.2.4
+ARG DOCKER_BUCKET=get.docker.com
+ARG DOCKER_VERSION=1.11.1
+ARG DOCKER_SHA256=893e3c6e89c0cd2c5f1e51ea41bc2dd97f5e791fcfa3cee28445df277836339d
+ARG HOME=/home/jenkins
+ARG K8S_VERSION=1.2.4
 
 # install docker
 RUN set -x \
@@ -38,7 +38,7 @@ RUN curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > /usr
     /usr/local/bin/sbt -v -sbt-dir /tmp/.sbt/0.13.11 -sbt-boot /tmp/.sbt/boot -ivy /tmp/.ivy2 -sbt-launch-dir /tmp/.sbt/launchers -211 -sbt-create about && \
     chown -R jenkins:jenkins /tmp/*
 
-WORKDIR /home/jenkins
+WORKDIR $HOME
 # COPY your project to here
 #
 # TODO: uncomment bellow otherwise you will suffer permission deny error
