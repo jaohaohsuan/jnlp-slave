@@ -27,9 +27,9 @@ RUN set -x \
   && addgroup jenkins \
   && adduser -h $HOME -s /bin/bash -D -G jenkins jenkins \
   && addgroup -g 999 docker && adduser jenkins docker \
-  && curl --create-dirs -sSLo /usr/share/jenkins/slave.jar http://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/2.52/remoting-2.52.jar \
+  && curl --create-dirs -sSLo /usr/share/jenkins/slave.jar http://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/2.7/remoting-2.7.jar \
   && chmod 755 /usr/share/jenkins \
-  && chmod 644 /usr/share/jenkins/slave.jar 
+  && chmod 644 /usr/share/jenkins/slave.jar
 
 COPY jenkins-slave /usr/local/bin/jenkins-slave
 
@@ -39,8 +39,4 @@ RUN curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > /usr
     chown -R jenkins:jenkins /tmp/*
 
 WORKDIR $HOME
-# COPY your project to here
-#
-# TODO: uncomment bellow otherwise you will suffer permission deny error
-# RUN chown -R jenkins:jenkins /home/jenkins \
 ENTRYPOINT ["jenkins-slave"]
