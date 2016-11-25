@@ -61,7 +61,10 @@ COPY jenkins-slave /usr/local/bin/jenkins-slave
 
 RUN mkdir -p sbt-init && cd sbt-init \
   && sbt -v -211 -sbt-create about \
+  && cd .. \
   && rm -rf sbt-init \
-  && cd /opt \
-  && tar -cvf sbt-ivy2-caches.tar.gz $HOME/.ivy2 $HOME/.sbt \
-  && rm -rf $HOME/.ivy2 $HOME/.sbt
+  && tar -cvf /opt/sbt-caches.tar.gz .ivy2 .sbt \
+  && rm -rf .ivy2 .sbt
+
+COPY entrypoint.sh /home/jenkins/entrypoint.sh
+ENTRYPOINT ["/home/jenkins/entrypoint.sh"]
