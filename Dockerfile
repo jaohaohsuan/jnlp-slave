@@ -51,12 +51,17 @@ RUN curl -L https://storage.googleapis.com/kubernetes-release/release/v${KUBERNE
     chmod 755 /usr/local/bin/kubectl
 #RUN ln -s /usr/local/bin/hyperkube /usr/local/bin/kubectl
 
+RUN mkdir -p /opt && chmod a+w /opt
+
 USER jenkins
 RUN mkdir /home/jenkins/.jenkins
 VOLUME /home/jenkins/.jenkins
 WORKDIR /home/jenkins
 COPY jenkins-slave /usr/local/bin/jenkins-slave
 
-RUN mkdir -p sbt-init \
+RUN mkdir -p sbt-init && cd sbt-init \
   && sbt -v -211 -sbt-create about \
-  && rm -rf sbt-init
+  && rm -rf sbt-init \
+  && cd /opt \
+  && tar -cvf sbt-ivy2-caches.tar.gz $HOME/.ivy2 $HOME/.sbt \
+  && rm -rf $HOME/.ivy2 $HOME/.sbt
