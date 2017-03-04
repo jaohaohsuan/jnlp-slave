@@ -14,8 +14,11 @@ podTemplate(label: 'demo', containers: [
   ]
   ){
     node('demo'){
-       stage('build') {
-           sh 'echo "compiling"'
+       container('docker') {
+	       stage('build') {
+		   sh 'docker build --pull -t henryrao/jnlp-slave .'
+		   sh 'echo "compiling"'
+	       }
        }
        
        stage('test') {
