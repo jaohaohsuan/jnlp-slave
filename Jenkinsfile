@@ -17,10 +17,7 @@ podTemplate(label: 'demo', containers: [
        checkout scm
        container('docker') {
          stage('build') {
-             sh 'ls -al'
-             sh 'pwd'
-             sh 'docker build --pull -t henryrao/jnlp-slave .'
-             sh 'echo "compiling"'
+             sh "docker build --pull -t henryrao/jnlp-slave ."
          }
        }
        
