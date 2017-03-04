@@ -15,10 +15,12 @@ podTemplate(label: 'demo', containers: [
   ){
     node('demo'){
        container('docker') {
-	       stage('build') {
-		   sh 'docker build --pull -t henryrao/jnlp-slave .'
-		   sh 'echo "compiling"'
-	       }
+         stage('build') {
+             sh 'ls -al'
+             sh 'pwd'
+             sh 'docker build --pull -t henryrao/jnlp-slave .'
+             sh 'echo "compiling"'
+         }
        }
        
        stage('test') {
