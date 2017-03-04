@@ -13,6 +13,7 @@ podTemplate(label: 'demo', containers: [
       hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
   ]
   ){
+    checkout scm
     node('demo'){
        container('docker') {
          stage('build') {
