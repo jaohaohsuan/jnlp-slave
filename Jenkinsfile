@@ -13,8 +13,8 @@ podTemplate(label: 'demo', containers: [
       hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
   ]
   ){
-    checkout scm
     node('demo'){
+       checkout scm
        container('docker') {
          stage('build') {
              sh 'ls -al'
