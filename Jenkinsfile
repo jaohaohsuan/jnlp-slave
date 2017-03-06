@@ -19,6 +19,8 @@ podTemplate(label: 'demo', containers: [
        container('docker') {
          stage('build') {
            
+           docker.build("henryrao/jnlp-slave",'--pull .')
+           
          }
        }
        
