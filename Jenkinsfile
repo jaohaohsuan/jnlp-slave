@@ -19,10 +19,11 @@ podTemplate(label: 'demo', containers: [
        container('docker') {
          stage('build') {
              try {
-                docker.build("henryrao/jnlp-slave",'--pull .').push('latest')
+                docker.build("henryrao/jnlp-slave",'--pull .')
              }
              catch(e)
              {
+                 docker.image("henryrao/jnlp-slave").push('latest')
                  echo "${e}"
                  sh 'echo $?'
                  
