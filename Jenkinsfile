@@ -23,9 +23,9 @@ podTemplate(label: 'demo', containers: [
              }
              catch(e)
              {
+                 echo "${e}"
                  sh 'echo $?'
-                 sleep 180
-                 throw e
+                 
              }
          }
        }
