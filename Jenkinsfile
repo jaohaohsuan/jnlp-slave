@@ -18,9 +18,14 @@ podTemplate(label: 'demo', containers: [
        checkout scm
        container('docker') {
          stage('build') {
-           
-           docker.build("henryrao/jnlp-slave",'--pull .')
-           
+             try {
+                docker.build("henryrao/jnlp-slave",'--pull .')
+             }
+             catch(e)
+             {
+                 sleep 180
+                 throw e
+             }
          }
        }
        
