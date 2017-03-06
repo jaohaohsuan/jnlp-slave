@@ -23,7 +23,7 @@ podTemplate(label: 'demo', containers: [
              }
              catch(e)
              {
-                 withDockerRegistry([url:"https://index.docker.io/v2/",credentialsId:"henryrao"]) {
+                 docker.withDockerRegistry([url:"https://index.docker.io/v2/",credentialsId:"docker-login"]) {
                     docker.image("henryrao/jnlp-slave").push('latest')
                  }
                  echo "${e}"
