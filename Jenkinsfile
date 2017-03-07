@@ -41,10 +41,12 @@ podTemplate(label: 'demo', containers: [
         }
 
         stage('deploy') {
-            withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                sh "docker login -u $USERNAME -p $PASSWORD"
-                sh "docker tag ${imgSha} ${params.imageRepo}"
-                sh "docker push ${params.imageRepo}"
+            container('docker') {
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                    sh "docker login -u $USERNAME -p $PASSWORD"
+                    sh "docker tag ${imgSha} ${params.imageRepo}"
+                    sh "docker push ${params.imageRepo}"
+                }
             }
         }
     }
