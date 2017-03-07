@@ -28,7 +28,8 @@ podTemplate(label: 'demo', containers: [
         container('docker') {
 
             stage('build') {
-                imgSha = sh(returnStdout: true, script: "docker build --pull -q .").trim() - ~/sha256:/
+                //  - ~/sha256:/
+                imgSha = sh(returnStdout: true, script: "docker build --pull -q .").trim()[7..-1]
             }
         }
 
