@@ -1,16 +1,9 @@
 #!groovy
-podTemplate(label: 'demo', containers: [
-        containerTemplate(name: 'jnlp',
-                image: 'henryrao/jnlp-slave',
-                args: '${computer.jnlpmac} ${computer.name}',
-                alwaysPullImage: true),
-        containerTemplate(name: 'docker',
-                image: 'docker:1.12.6',
-                ttyEnabled: true,
-                command: 'cat'),
+podTemplate(label: 'jnlp', containers: [
+        containerTemplate(name: 'jnlp', image: 'henryrao/jnlp-slave', args: '${computer.jnlpmac} ${computer.name}', alwaysPullImage: true)
 ],
         volumes: [
-                hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
+          hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
         ]
 ) {
     properties([
@@ -20,33 +13,9 @@ podTemplate(label: 'demo', containers: [
             ]),
     ])
 
-    node('demo') {
-
-        checkout scm
-        def imgSha = ''
-        container('docker') {
-
-            stage('build') {
-                //  - ~/sha256:/
-                sh 'pwd'
-                sh 'ls -al'
-                imgSha = sh(returnStdout: true, script: "docker build --pull -q .").trim()[7..-1]
-                echo "${imgSha}"
-            }
-        }
-
-        stage('test') {
-
-        }
-
-        stage('deploy') {
-            container('docker') {
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                    sh "docker login -u $USERNAME -p $PASSWORD"
-                    sh "docker tag ${imgSha} ${params.imageRepo}"
-                    sh "docker push ${params.imageRepo}"
-                }
-            }
-        }
+    node('jnlp') {
+        withDockerRegistry([credentialsId: 'docker-login']) {
+                docker.build(params.imageRepo,'.').push('latest')
+				}
     }
 }
