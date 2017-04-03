@@ -14,8 +14,11 @@ podTemplate(label: 'jnlp', containers: [
     ])
 
     node('jnlp') {
+      stage('docker build & push') {
+        checkout scm
         withDockerRegistry([credentialsId: 'docker-login']) {
-                docker.build(params.imageRepo,'.').push('latest')
-				}
+          docker.build(params.imageRepo,'.').push('latest')
+        }
+      }
     }
 }
