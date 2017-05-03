@@ -7,7 +7,8 @@ RUN apk --no-cache add curl \
     bash \
     ansible \
     git \
-    vim
+    vim \
+    openssh-client
 
 LABEL Description="This is a base image, which provides the Jenkins agent executable (slave.jar)" Vendor="Jenkins project" Version="3.5"
 
