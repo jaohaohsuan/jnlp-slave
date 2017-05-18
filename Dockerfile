@@ -23,4 +23,5 @@ VOLUME ["/home/jenkins/.jenkins"]
 WORKDIR /home/jenkins
 
 COPY jenkins-slave /usr/local/bin/jenkins-slave
+ENV JAVA_OPTS="-Xms256m -Xmx256m -XX:PermSize=64M -XX:MaxPermSize=128M"
 ENTRYPOINT ["jenkins-slave"]
