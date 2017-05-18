@@ -10,7 +10,7 @@ RUN apk --no-cache add curl \
     vim \
     openssh-client
 
-LABEL Description="This is a base image, which provides the Jenkins agent executable (slave.jar)" Vendor="Jenkins project" Version="3.5"
+LABEL Description="This is a base image, which provides the Jenkins agent executable (slave.jar)" Vendor="Jenkins project" Version="3.7"
 
 ARG VERSION=3.7
 

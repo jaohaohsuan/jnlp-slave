@@ -14,12 +14,12 @@ podTemplate(
         def image
 
         stage('build') {
-           image = docker.build("henryrao/henryrao/jnlp-slave", "--no-cache=true --pull .")
+           image = docker.build("henryrao/henryrao/jnlp-slave:${head}-${env.BUILD_NUMBER}", "--no-cache=true --pull .")
         }
         
         stage('push') {
-            docker.withRegistry('https://registry.hub.docker.com/', 'docker-login') {
-                image.push("$head")
+            docker.withRegistry('https://index.docker.io/v1/', 'docker-login') {
+                image.push()
                 image.push('latest')
             }
         }
